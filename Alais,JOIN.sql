@@ -62,8 +62,7 @@ SELECT
     E.department_code,
     D.name,
     D.tel_number
-FROM employee E
-INNER JOIN department D
+FROM employee E INNER JOIN department D
 ON E.department_code = D.department_code
 WHERE E.age < 20;
 
@@ -141,9 +140,58 @@ SELECT E.employee_number '사번', e.name '이름', e.age '나이'
 FROM employee E RIGHT JOIN department D
 ON E.department_code = D.department_code
 WHERE D.name = '영업부';
+-- 이런 상황은 JOIN이 좋지 않다? BC, 성능을 향상시키지 않기에, subquery 이용이 더 좋다
 
+-- 서브 쿼리: 쿼리 내부에서 존재하는 또 다른 쿼리, 쿼리 결과를 조건이나 테이블로 사용할 수 있도록 함.
 
+-- WHERE 절에서 서브쿼리: 조회 결과를 조건으로 사용하여 조건을 동적으로 지정할 수 있도록 함
+-- WHERE 절에서 비교 연산등으로 사용할 때 서브쿼리의 결과 컬럼 수 및 레코드 수 주의
+SELECT employee_number, name, age
+FROM employee
+WHERE department_code = (
+SELECT department_code 
+FROM department 
+WHERE name = '영업부'
+);
+-- WHERE 조건에서 서브 쿼리 이용 시 일반적으로 해당 서브쿼리의 결과 컬럼은 1개가 와야함.
+SELECT employee_number, name, age
+FROM employee
+WHERE department_code = (
+SELECT * 
+FROM department 
+WHERE name = '영업부'
+); -- UNIQUE 조건 걸어야지 WHERE를 이용한 서브쿼리를 쓸 때 100프로 성공함.
 
+-- WHERE 조건 절에서 서브쿼리를 사용할 때 연산자에 따라 레코드의 개수를 잘 확인해야 함.
+SELECT employee_number, name, age
+FROM employee
+WHERE department_code = (
+SELECT department_code 
+FROM department 
+);
+
+SELECT employee_number, name, age
+FROM employee
+WHERE department_code IN (
+SELECT department_code 
+FROM department 
+);
+
+SELECT employee_number, name, age
+FROM employee
+WHERE department_code IN (
+SELECT * 
+FROM department 
+);
+
+-- FROM 절에서 서브쿼리: 조회 결과 테이블을 다시 FROM 절에서 재사용
+SELECT *
+FROM employee E INNER JOIN (
+	SELECT * FROM department WHERE name = '영업부'
+) D
+ON E.department_code = D.department_code;
+
+-- 서브쿼리를 FROM 절에서 사용할 땐 3개이상의 테이블을 조인해서 결과를 얻고자 할 때 아주 유용하게 사용됨.
 
 
 

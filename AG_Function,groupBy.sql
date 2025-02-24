@@ -59,15 +59,18 @@ GROUP BY employee_number; -- 이 녀석은 에러 뜸!
 -- 집계함수, 그룹화가 되어 있는 쿼리에서는 그룹화한 컬럼과 집계함수를 제외한 컬럼은 SELECT 절에서 선택 불가능
 SELECT MIN(amount), MAX(amount), date
 FROM sale 
-GROUP BY employee_number; -- 위에 에러를 안뜨게 하는 법
+GROUP BY employee_number; -- 위에 에러를 안뜨게 하는 법 --> 데이트가 안뜸
 
 SELECT MIN(amount), MAX(amount), employee_number ,date
 FROM sale 
-GROUP BY employee_number, date;
+GROUP BY employee_number, date; -- > 나오긴 하지만 이렇게 하면 원하지 않는 결과가 도출 가능
 
 -- 필터링 (HAVING): 그룹화된 결과에 필터 작업을 수행
 -- 결과 및 사용법이 WHERE절과 비슷하게 보이지만, WHERE절은 조회할 때 사용, HAVING 절은 조회 후에 사용됨.
-SELECT MIN(amount) '최소' , MAX(amount) '최대', employee_number '사번'
+SELECT 
+MIN(amount) '최소' , 
+MAX(amount) '최대', 
+employee_number '사번'
 FROM sale 
 -- WHERE date = '2025-01-20'
 GROUP BY employee_number

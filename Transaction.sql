@@ -13,7 +13,7 @@ USE practice_sql;
 -- COMMIT: 트랜잭션의 변경 사항을 데이터베이스에 영구히 반영(트랜잭션의 성공적 완료)
 -- ROLLBACK: 트랜잭션의 작업 내용을 이전 상태로 복원
 -- SAVEPOINT: 트랜잭션 내부에서 롤백 시 돌아올 위치 지정
--- SET AUTOCOMMIT: 자동 커밋(1: 활성화, 0: 비활성화)
+-- SET AUTOCOMMIT: 자동 커밋(1: 활성화, 0: 비활성화) 
 
 
 START TRANSACTION;
